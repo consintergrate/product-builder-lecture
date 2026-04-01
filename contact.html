@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제휴 문의</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-container {
+            text-align: left;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 480px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark .form-container {
+            background-color: #16213e;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .form-container p.subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        body.dark .form-container p.subtitle {
+            color: #aaa;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #444;
+            transition: color 0.3s;
+        }
+
+        body.dark .form-group label {
+            color: #ccc;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+            background-color: #fff;
+        }
+
+        body.dark .form-group input,
+        body.dark .form-group textarea,
+        body.dark .form-group select {
+            background-color: #1a1a2e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        body.dark .form-group input:focus,
+        body.dark .form-group textarea:focus,
+        body.dark .form-group select:focus {
+            border-color: #007bff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 16px;
+            font-size: 15px;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle">🌙 Dark Mode</button>
+    <div class="form-container">
+        <h1>제휴 문의</h1>
+        <p class="subtitle">파트너십 및 제휴 관련 문의를 남겨주세요.</p>
+        <form id="contact-form" action="https://formspree.io/f/mbdpklvv" method="POST">
+            <div class="form-group">
+                <label for="name">이름 / 회사명</label>
+                <input type="text" id="name" name="name" placeholder="홍길동 / (주)회사명" required>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="type">문의 유형</label>
+                <select id="type" name="type">
+                    <option value="partnership">제휴 제안</option>
+                    <option value="advertising">광고 문의</option>
+                    <option value="collaboration">협업 제안</option>
+                    <option value="other">기타</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message">문의 내용</label>
+                <textarea id="message" name="message" placeholder="문의 내용을 자세히 작성해주세요." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">문의 보내기</button>
+            <p class="success-msg" id="success-msg">✅ 문의가 성공적으로 접수되었습니다!</p>
+        </form>
+        <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+    </div>
+    <script>
+        // 다크모드 토글
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
+        // Formspree AJAX 제출
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            });
+            if (response.ok) {
+                form.reset();
+                document.getElementById('success-msg').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
