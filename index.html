@@ -1,20 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Number Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>밸런스 게임</title>
+    <link rel="stylesheet" href="balance.css">
 </head>
 <body>
     <button id="theme-toggle">🌙 Dark Mode</button>
-    <div class="container">
-        <h1>Lotto Number Generator</h1>
-        <div class="lotto-numbers"></div>
-        <button id="generate-btn">Generate Numbers</button>
-        <a href="contact.html" class="contact-link">제휴 문의하기</a>
-        <a href="comments.html" class="contact-link">💬 댓글 게시판</a>
+
+    <div class="page-wrapper">
+
+        <!-- 헤더 -->
+        <header>
+            <h1>⚖️ 밸런스 게임</h1>
+            <p class="header-sub">둘 중 하나만 고른다면?</p>
+        </header>
+
+        <!-- 게임 카드 -->
+        <main class="game-section">
+            <div class="question-badge">Q<span id="question-number">1</span></div>
+            <h2 class="question-title" id="question-title">로딩 중...</h2>
+
+            <div class="choices">
+                <button class="choice-btn" id="btn-a" onclick="vote('A')">
+                    <span class="choice-label">A</span>
+                    <span class="choice-text" id="text-a"></span>
+                </button>
+
+                <div class="vs">VS</div>
+
+                <button class="choice-btn" id="btn-b" onclick="vote('B')">
+                    <span class="choice-label">B</span>
+                    <span class="choice-text" id="text-b"></span>
+                </button>
+            </div>
+
+            <!-- 결과 (선택 후 표시) -->
+            <div class="result-section" id="result-section" style="display:none">
+                <p class="result-title">🗳️ 현재 투표 결과</p>
+                <div class="result-bars">
+                    <div class="result-row">
+                        <span class="result-label" id="result-label-a"></span>
+                        <div class="bar-wrap">
+                            <div class="bar bar-a" id="bar-a"></div>
+                        </div>
+                        <span class="result-pct" id="pct-a">0%</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label" id="result-label-b"></span>
+                        <div class="bar-wrap">
+                            <div class="bar bar-b" id="bar-b"></div>
+                        </div>
+                        <span class="result-pct" id="pct-b">0%</span>
+                    </div>
+                </div>
+                <p class="my-vote" id="my-vote"></p>
+                <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 문제 →</button>
+            </div>
+        </main>
+
+        <!-- 진행 표시 -->
+        <div class="progress-wrap">
+            <div class="progress-dots" id="progress-dots"></div>
+        </div>
+
+        <!-- 토론장 -->
+        <section class="discussion-section">
+            <h2 class="discussion-title">💬 이 질문에 대한 토론</h2>
+            <p class="discussion-sub">선택한 이유를 댓글로 남겨주세요!</p>
+            <div id="disqus_thread"></div>
+            <script>
+                var disqus_config = function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = 'balance-game-' + (window.currentQuestionId || 'main');
+                };
+                (function() {
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://acherm10.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>댓글을 보려면 JavaScript를 활성화해주세요. <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </section>
+
     </div>
-    <script src="main.js"></script>
+
+    <script src="balance.js"></script>
 </body>
 </html>
