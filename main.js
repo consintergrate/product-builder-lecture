@@ -1,5 +1,6 @@
 const lottoNumbersContainer = document.querySelector('.lotto-numbers');
 const generateBtn = document.getElementById('generate-btn');
+const themeToggle = document.getElementById('theme-toggle');
 
 generateBtn.addEventListener('click', () => {
     lottoNumbersContainer.innerHTML = '';
@@ -16,4 +17,10 @@ generateBtn.addEventListener('click', () => {
         numberDiv.textContent = number;
         lottoNumbersContainer.appendChild(numberDiv);
     }
+});
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
 });
